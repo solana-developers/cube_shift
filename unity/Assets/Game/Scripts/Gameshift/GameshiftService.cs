@@ -16,9 +16,10 @@ public class GameshiftService : MonoBehaviour
     
     private string ShiftId;
     private string EmailAddress;
-
+ 
     private const string SHIFT_API_URI = "https://api.gameshift.dev/";
-    private const string MY_API_URI = "https://e61b-77-10-59-99.ngrok-free.app/api/";
+    private const string MY_API_URI = "https://cube-shift.vercel.app/api/";
+    //private const string MY_API_URI = "https://e61b-77-10-59-99.ngrok-free.app/api/";
     private const string SHIFT_ID_KEY = "SHIFT_ID_KEY";
     private const string EMAIL_KEY = "EMAIL_KEY";
     private int currentRequests;
@@ -177,7 +178,6 @@ public class GameshiftService : MonoBehaviour
     {
         using (UnityWebRequest request = UnityWebRequest.Get(MY_API_URI + "/assets?user=" + shiftId))
         {
-            request.SetRequestHeader("x-api-key", GameShiftUtils.API_KEY);
             currentRequests++;
             yield return request.SendWebRequest();
             currentRequests--;
@@ -190,6 +190,7 @@ public class GameshiftService : MonoBehaviour
                 if (request.responseCode == 200)
                 {
                     string result = request.downloadHandler.text;
+                    Debug.Log("res"+result);
                     AssetsResultJson assets = JsonUtility.FromJson<AssetsResultJson>(result);
                     AllAssets = assets.json;
                     OnAssetsLoaded.Invoke(AllAssets);
@@ -215,7 +216,6 @@ public class GameshiftService : MonoBehaviour
 
         using (UnityWebRequest request = UnityWebRequest.Post(MY_API_URI + "mintAsset", json, "application/json"))
         {
-            request.SetRequestHeader("x-api-key", GameShiftUtils.API_KEY);
             request.SetRequestHeader("Content-Type", "application/json");
 
             currentRequests++;
