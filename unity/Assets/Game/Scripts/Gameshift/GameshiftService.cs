@@ -176,7 +176,7 @@ public class GameshiftService : MonoBehaviour
     
     public IEnumerator GetAllAssets(string shiftId)
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(MY_API_URI + "/assets?user=" + shiftId))
+        using (UnityWebRequest request = UnityWebRequest.Get(MY_API_URI + "assets?user=" + shiftId))
         {
             currentRequests++;
             yield return request.SendWebRequest();

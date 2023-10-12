@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     public int CurrentLevel;
     public float CurrentExp;
+    public int CurrentCoins;
     public double CollectRange;
     public int CurrentHealth = 50;
     public int MaxHealth = 50;
@@ -22,12 +23,14 @@ public class PlayerController : MonoBehaviour
     private const int MaxLevel = 100;
     private const int ExpRequiredForLevel1 = 100;
     private const float ExpMultiplier = 1.1f;
+    private const string CoinsPlayerPrefsKey = "coins";
     
     void Awake()
     {
         ServiceFactory.RegisterSingleton(this);
         CurrentLevel = 1;
         CachedTransform = transform;
+        CurrentCoins = PlayerPrefs.GetInt(CoinsPlayerPrefsKey);
     }
 
     public void Hit(int damage)
@@ -44,6 +47,10 @@ public class PlayerController : MonoBehaviour
         if (CurrentHealth <= 0)
         {
             Die();
+        }
+        if (CurrentHealth > MaxHealth)
+        {
+            CurrentHealth = MaxHealth;
         }
         HealthBar.SetValue(CurrentHealth / (float) MaxHealth);
     }
@@ -63,6 +70,13 @@ public class PlayerController : MonoBehaviour
         {
             OnLevelUp();
         }
+    }
+
+    public void GainCoin(int coinsGained)
+    {
+        CurrentCoins += coinsGained;
+        ServiceFactory.Resolve<BlimpManager>().SpawnBlimp( transform.position ,$"+{coinsGained} coins!", Color.yellow);
+        PlayerPrefs.SetInt(CoinsPlayerPrefsKey, CurrentCoins);
     }
 
     private void OnLevelUp()

@@ -6,6 +6,7 @@ using Game.Scripts;
 using ToolBox.Pools;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class BaseEnemy : MonoBehaviour, IEnemy
 {
@@ -65,6 +66,10 @@ public class BaseEnemy : MonoBehaviour, IEnemy
     {
         var enemyManager = ServiceFactory.Resolve<EnemyManager>();
         enemyManager.SpawnXpBlobByEnemy(this);
+        if (Random.Range(0, 100) == 1)
+        {
+            enemyManager.SpawnCoinsBlob(10, transform.position);
+        }
         enemyManager.RemoveEnemy(this);
         gameObject.Release();
         var hitFx = DieFx.Reuse();

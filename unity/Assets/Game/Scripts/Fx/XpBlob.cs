@@ -4,11 +4,11 @@ using Frictionless;
 using ToolBox.Pools;
 using UnityEngine;
 
-public class XpBlob : MonoBehaviour, IPoolable
+public class XpBlob : MonoBehaviour, IPoolable, IWorldObject
 {
     public int Xp;
     public bool IsCollected;
-    
+
     public void OnReuse()
     {
         IsCollected = false;
@@ -40,7 +40,7 @@ public class XpBlob : MonoBehaviour, IPoolable
             if ((transform.position - transformPosition).magnitude < 0.3f)
             {
                 ServiceFactory.Resolve<PlayerController>().GainExp(Xp);
-                ServiceFactory.Resolve<EnemyManager>().RemoveXpBlob(this);
+                ServiceFactory.Resolve<EnemyManager>().RemoveWorldObject(this);
                 return false;
             }
         }
@@ -54,4 +54,15 @@ public class XpBlob : MonoBehaviour, IPoolable
 
         return true;
     }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
+}
+
+public interface IWorldObject
+{
+    bool OnUpdate();
+    GameObject GetGameObject();
 }

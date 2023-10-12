@@ -11,9 +11,10 @@ namespace Cubeshift
     public class EnemyManager : MonoBehaviour
     {
         public List<BaseEnemy> AllEnemies = new List<BaseEnemy>();
-        public List<XpBlob> AllXpBlobs = new List<XpBlob>();
+        public List<IWorldObject> AllWorldObjectBlobs = new List<IWorldObject>();
 
         public GameObject XpBlob;
+        public GameObject CoinsXpBlob;
 
         public int StartXpBlobs = 10;
         public float StartXpBlobRadius = 20;
@@ -43,15 +44,15 @@ namespace Cubeshift
             AllEnemies.Remove(enemy);
         }
 
-        public void AddXpBlob(XpBlob xp)
+        public void AddWorldObjectBlob(IWorldObject xp)
         {
-            AllXpBlobs.Add(xp);
+            AllWorldObjectBlobs.Add(xp);
         }
 
-        public void RemoveXpBlob(XpBlob xp)
+        public void RemoveWorldObject(IWorldObject xp)
         {
-            xp.gameObject.Release();
-            AllXpBlobs.Remove(xp);
+            xp.GetGameObject().Release();
+            AllWorldObjectBlobs.Remove(xp);
         }
 
         public void SpawnXpBlobByEnemy(BaseEnemy enemy)
@@ -63,7 +64,14 @@ namespace Cubeshift
         {
             var newXpBlob = XpBlob.Reuse<XpBlob>();
             newXpBlob.Init(xp, position);
-            AddXpBlob(newXpBlob);
+            AddWorldObjectBlob(newXpBlob);
+        }
+
+        public void SpawnCoinsBlob(int coins, Vector3 position)
+        {
+            var newCoinBlob = CoinsXpBlob.Reuse<CoinBlob>();
+            newCoinBlob.Init(coins, position);
+            AddWorldObjectBlob(newCoinBlob);
         }
 
         public BaseEnemy GetClosestEnemy(Vector3 transformPosition)
@@ -97,9 +105,9 @@ namespace Cubeshift
                 enemy.OnUpdate();
             }
 
-            for (int i = AllXpBlobs.Count - 1; i >= 0; i--)
+            for (int i = AllWorldObjectBlobs.Count - 1; i >= 0; i--)
             {
-                var xpBlob = AllXpBlobs[i];
+                var xpBlob = AllWorldObjectBlobs[i];
                 // This makes the collecting a bit cooler because it can only collect on per frame
                 if (!xpBlob.OnUpdate())
                 {

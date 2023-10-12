@@ -1,0 +1,13 @@
+Todo:
+
+- Add Fireball skill 
+- Add Golden cube to chase 
+- Add Character upgrades for gold 
+- find better sounds 
+
+Done: 
+- Polish login screen
+- Add stats to characters 
+- add coins blimp
+- Add Gold 
+ 

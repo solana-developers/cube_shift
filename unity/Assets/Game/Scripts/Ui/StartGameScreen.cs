@@ -78,7 +78,7 @@ public class StartGameScreen : BaseScreen
         else
         {
             FireMage.SelectButton.interactable = true;
-            FireMage.SelectButtonText.text = "Buy";
+            FireMage.SelectButtonText.text = "Buy 0.99$";
         }
 
         if (OwnsCharacter(CharacterId.Monkey))
@@ -89,7 +89,7 @@ public class StartGameScreen : BaseScreen
         else
         {
             Monkey.SelectButton.interactable = true;
-            Monkey.SelectButtonText.text = "Buy";
+            Monkey.SelectButtonText.text = "Buy 5.99$";
         }
     }
 

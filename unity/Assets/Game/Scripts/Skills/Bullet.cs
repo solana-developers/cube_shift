@@ -1,3 +1,5 @@
+using Frictionless;
+using Game.Scripts;
 using ToolBox.Pools;
 using UnityEngine;
 
@@ -47,6 +49,10 @@ namespace Cubeshift
 
         private void OnTriggerEnter(Collider other)
         {
+            if (ServiceFactory.Resolve<GameController>().IsGameOver)
+            {
+                return;
+            }
             var enemy = other.GetComponent<BaseEnemy>();
             if (enemy == null)
             {

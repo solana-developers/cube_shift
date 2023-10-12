@@ -10,6 +10,8 @@ public class PlayerHud : MonoBehaviour
     public HealthBar HealthBar;
     public TextMeshProUGUI CurrentLevel;
     public TextMeshProUGUI Timer;
+    public GameObject CoinsHud;
+    public TextMeshProUGUI CoinsAmount;
 
     private float startTime;
     
@@ -46,9 +48,13 @@ public class PlayerHud : MonoBehaviour
         Slider.value = playerController.GetLevelProgress();
          CurrentLevel.text = playerController.CurrentLevel.ToString();
         Timer.text = FormatTime(Time.time - startTime);
-        Timer.gameObject.SetActive(ServiceFactory.Resolve<GameController>().IsGameRunning);
-        Slider.gameObject.SetActive(ServiceFactory.Resolve<GameController>().IsGameRunning);
-        CurrentLevel.gameObject.SetActive(ServiceFactory.Resolve<GameController>().IsGameRunning);
+        var gameController = ServiceFactory.Resolve<GameController>();
+        Timer.gameObject.SetActive(gameController.IsGameRunning);
+        Slider.gameObject.SetActive(gameController.IsGameRunning);
+        CurrentLevel.gameObject.SetActive(gameController.IsGameRunning);
+        CoinsHud.gameObject.SetActive(gameController.IsGameRunning);
+
+        CoinsAmount.text = playerController.CurrentCoins.ToString();
         
         var boss = ServiceFactory.Resolve<EnemySpawner>().ActiveBoss;
         if (boss != null && boss.isActiveAndEnabled)

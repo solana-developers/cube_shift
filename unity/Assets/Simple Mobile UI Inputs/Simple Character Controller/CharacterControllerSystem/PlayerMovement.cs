@@ -1,4 +1,5 @@
 ﻿using Frictionless;
+using Game.Scripts;
 using UI_InputSystem.Base;
 using UnityEngine;
 
@@ -66,7 +67,8 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         if (!playerTransform) return;
-
+        if (!ServiceFactory.Resolve<GameController>().IsGameRunning) return; 
+        
         Vector3 directionVector3 = Vector3.zero;
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
