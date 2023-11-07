@@ -20,6 +20,9 @@ Features of game shift used:
 - Sign up player using a client token and email address
 - Minting assets in form of new characters for the game. Fire mage which has extra fire bolts and Monkey which starts with extra banana skill. 
 
+<img width="892" alt="image" src="https://github.com/solana-developers/cube_shift/assets/5938789/37ac970e-501d-43ce-8315-d8f5e7a11dad">
+
+
 Players login with email adress and the access token is saved in the client for now. 
 
 Feel free to fork the game and use it or open PRs right here. 
