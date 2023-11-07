@@ -11,8 +11,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
   res.setHeader('Access-Control-Allow-Credentials', "true")
   res.setHeader('Access-Control-Allow-Origin', '*')
-  // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -23,6 +21,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 }
+
 /*
 How to call with curl: curl -i -X POST -H 'Content-Type: application/json' -d '{"assetId":"Monkey","referenceId":"jonas"}' http://localhost:3000/api/mintAsset
 */
@@ -34,8 +33,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse<POST>) => {
 
     var nftJsonPayload = "";
     console.log("req.body: " + JSON.stringify(req.body));
-    console.log("assetId: " + assetId);
-    console.log("referenceId: " + referenceId);
     switch (assetId) {
       case "Monkey":
         nftJsonPayload = generateMonkeyJson(referenceId);
@@ -44,8 +41,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse<POST>) => {
         nftJsonPayload = generateFireMageJson(referenceId);
         break;
       default:
-        console.log("It's something else.");
-        return res.status(200).send({ json: "No asset for that asset id." });
+        console.log("No asset for assetId: " + assetId + " found");
+        return res.status(404).send({ json: "No asset for that asset id." });
     }
 
     const apiKey = process.env.SHIFT_API_KEY ? process.env.SHIFT_API_KEY : "";

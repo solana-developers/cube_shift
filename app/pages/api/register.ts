@@ -12,8 +12,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 console.log("req.method: " + req.method);
   res.setHeader('Access-Control-Allow-Credentials', "true")
   res.setHeader('Access-Control-Allow-Origin', '*')
-  // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -25,14 +23,11 @@ console.log("req.method: " + req.method);
   }
 }
 
-
 /*
 How to call with curl:  curl -i -X POST -H 'Content-Type: application/json' -d '{"email":"jondas@web.de","referenceId":"test5"}' http://localhost:3000/api/register
 */
 const post = async (req: NextApiRequest, res: NextApiResponse<POST>) => {
-
-  console.log("req.body: " + JSON.stringify(req.body)); 
-  const { email: email, referenceId: referenceId } = req.body;
+    const { email: email, referenceId: referenceId } = req.body;
 
     var SHIFT_API_URI = "https://api.gameshift.dev/";
 
@@ -48,6 +43,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse<POST>) => {
         referenceId: referenceId
       })
     });
+    
     const json = await result.json();
     console.log(json);
     res.status(200).send({ json: json });

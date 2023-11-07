@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eefb5af7ed5a4564b0179f993e509b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PortraitCameraOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1146960638202884458
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,11 +560,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentLevel: 0
   CurrentExp: 0
+  CurrentCoins: 0
   CollectRange: 5
   CurrentHealth: 0
   MaxHealth: 0
   HealthBar: {fileID: 7803745355320315778}
   ConfettiPrefab: {fileID: 1511036532037476996, guid: 7f9f49636829b47e2ba9aa51d6a60e68,
+    type: 3}
+  LevelUpPrefab: {fileID: 1878065821641386, guid: 4bea99a565142254d9c238e986b159a1,
     type: 3}
   CachedTransform: {fileID: 0}
 --- !u!114 &4775027029244769021

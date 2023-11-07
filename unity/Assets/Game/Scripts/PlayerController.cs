@@ -4,7 +4,6 @@ using Frictionless;
 using Game.Scripts;
 using ToolBox.Pools;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,16 +14,23 @@ public class PlayerController : MonoBehaviour
     public int CurrentHealth = 50;
     public int MaxHealth = 50;
     public HealthBar HealthBar;
+    public AudioSource XpCollectSource;
+    public AudioClip XpCollectClip;
+    public AudioClip CoinCollectClip;
     
     public GameObject ConfettiPrefab;
+    public GameObject LevelUpPrefab;
     public Transform CachedTransform;
-    
+    public delegate void onXpChanged(float newXp);
+    public onXpChanged OnXpChanged;
+
     // Define the constants for your leveling system
     private const int MaxLevel = 100;
     private const int ExpRequiredForLevel1 = 100;
     private const float ExpMultiplier = 1.1f;
     private const string CoinsPlayerPrefsKey = "coins";
-    
+    private float lastSoundPlayed;
+
     void Awake()
     {
         ServiceFactory.RegisterSingleton(this);
@@ -60,11 +66,17 @@ public class PlayerController : MonoBehaviour
         ServiceFactory.Resolve<GameController>().GameOver(false);
         Debug.Log("player died");
     }
-
+    
     public void GainExp(float expGained)
     {
+        if (Time.time > lastSoundPlayed + 0.05)
+        {
+            XpCollectSource.PlayOneShot(XpCollectClip);
+            lastSoundPlayed = Time.time;
+        }
         CurrentExp += expGained;
-        
+        ServiceFactory.Resolve<BlimpManager>().SpawnBlimp(transform.position, $"+{expGained}Xp", Color.green);
+        OnXpChanged.Invoke(expGained);
         // Check if the player has leveled up
         while (CurrentLevel < MaxLevel && CurrentExp >= GetExpRequiredForNextLevel())
         {
@@ -74,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
     public void GainCoin(int coinsGained)
     {
+        XpCollectSource.PlayOneShot(CoinCollectClip);
         CurrentCoins += coinsGained;
         ServiceFactory.Resolve<BlimpManager>().SpawnBlimp( transform.position ,$"+{coinsGained} coins!", Color.yellow);
         PlayerPrefs.SetInt(CoinsPlayerPrefsKey, CurrentCoins);
@@ -85,7 +98,10 @@ public class PlayerController : MonoBehaviour
         CurrentLevel++;
         var confettig = ConfettiPrefab.Reuse();
         confettig.transform.position = transform.position + Vector3.up * 2;
+        var levelUpPrefab = LevelUpPrefab.Reuse();
+        levelUpPrefab.transform.position = transform.position + Vector3.up * 2;        
         ServiceFactory.Resolve<SkillController>().SpawnCollectableSkill();
+        ServiceFactory.Resolve<BlimpManager>().SpawnBlimp(transform.position, "Level Up!", Color.white);
     }
 
     public float GetLevelProgress()

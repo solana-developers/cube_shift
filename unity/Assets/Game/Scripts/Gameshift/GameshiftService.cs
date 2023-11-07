@@ -39,7 +39,7 @@ public class GameshiftService : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(ShiftId))
         {
-            StartCoroutine(GetUserFromMy(ShiftId));   
+            StartCoroutine(GetUserFromApi(ShiftId));   
         }
         else
         {
@@ -62,18 +62,16 @@ public class GameshiftService : MonoBehaviour
         }
     }
     
-    public IEnumerator GetUserFromMy(string shiftId)
+    public IEnumerator GetUserFromApi(string shiftId)
     {
         using (UnityWebRequest request = UnityWebRequest.Get(MY_API_URI + "user?user="+shiftId))
         {
-            Debug.Log("Get User");
             currentRequests++;
             yield return request.SendWebRequest();
-            Debug.Log("Get User done");
             currentRequests--;
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.LogError("Connection error register.");
+                Debug.LogError("Connection error getUser.");
             }
             else
             {
@@ -82,9 +80,7 @@ public class GameshiftService : MonoBehaviour
                     string result = request.downloadHandler.text;
                     StartCoroutine(GetAllAssets(shiftId));
                     OnLogin?.Invoke();
-                    ServiceFactory.Resolve<LoginScreen>().Close();
-
-                    Debug.Log("Result: " + result);
+                    Debug.Log("Login Result: " + result);
                 }
                 else
                 {
@@ -99,21 +95,18 @@ public class GameshiftService : MonoBehaviour
         using (UnityWebRequest request = UnityWebRequest.Get(SHIFT_API_URI + "/users/"+shiftId))
         {
             request.SetRequestHeader("x-api-key", GameShiftUtils.API_KEY);
-            currentRequests++;
+     
             yield return request.SendWebRequest();
-            currentRequests--;
+
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.LogError("Connection error register.");
-            }
+                Debug.LogError("Connection error GetUser.");
+            } 
             else
             {
-                string result = request.downloadHandler.text;
                 StartCoroutine(GetAllAssets(shiftId));
                 OnLogin?.Invoke();
                 ServiceFactory.Resolve<LoginScreen>().Close();
-
-                Debug.Log("Result: " + result);
             }
         }
     }
@@ -206,13 +199,7 @@ public class GameshiftService : MonoBehaviour
     
     public IEnumerator CreateAsset(CharacterId characterId)
     {
-        /*string json = @"
-        {
-            ""referenceId"": """ + ShiftId + @""",
-            ""assetId"": """ + characterId.ToString() + @"""
-        }";*/
-        
-        string json = "{\"referenceId\":\"" + ShiftId + "\",\"assetId\":\"" + characterId.ToString() + "\"}";
+        string json = "{\"referenceId\":\"" + ShiftId + "\",\"assetId\":\"" + characterId + "\"}";
 
         using (UnityWebRequest request = UnityWebRequest.Post(MY_API_URI + "mintAsset", json, "application/json"))
         {

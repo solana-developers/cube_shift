@@ -11,8 +11,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   }
   res.setHeader('Access-Control-Allow-Credentials', "true")
   res.setHeader('Access-Control-Allow-Origin', '*')
-  // another common pattern
-  // res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
   res.setHeader(
     'Access-Control-Allow-Headers',
@@ -43,8 +41,9 @@ const get = async (req: NextApiRequest, res: NextApiResponse<GET>) => {
 
     var SHIFT_API_URI = "https://api.gameshift.dev/";
     const user = getFromPayload(req, 'Query', 'user');
-console.log("fget assets user: " + user);
+
     const apiKey = process.env.SHIFT_API_KEY ? process.env.SHIFT_API_KEY : "";
+
     const result = await fetch(SHIFT_API_URI + "/users/" + user + "/assets",{
       method: "GET",
       headers: {
@@ -52,6 +51,7 @@ console.log("fget assets user: " + user);
         "x-api-key": apiKey
       }
     });
+    
     const json = await result.json();
     res.status(200).json({
       json: json,

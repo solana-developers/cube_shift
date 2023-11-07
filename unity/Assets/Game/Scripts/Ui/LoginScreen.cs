@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using Frictionless;
 using TMPro;
@@ -16,6 +17,16 @@ public class LoginScreen : BaseScreen
         LoginButton.onClick.AddListener(OnLoginButtonClicked);
     }
 
+    private void Start()
+    {
+        ServiceFactory.Resolve<GameshiftService>().OnLogin += OnLogin;
+    }
+
+    private void OnLogin()
+    {
+        Close();
+    }
+    
     private void OnLoginButtonClicked()
     {
         if (IsEmailValid(EmailInput.text))

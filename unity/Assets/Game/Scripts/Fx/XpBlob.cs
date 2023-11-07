@@ -16,7 +16,6 @@ public class XpBlob : MonoBehaviour, IPoolable, IWorldObject
 
     public void OnRelease()
     {
-        
     }
     
     public void Init(int xp, Vector3 position)

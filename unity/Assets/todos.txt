@@ -1,9 +1,14 @@
 Todo:
 
+- Improve access headers for next js app
 - Add Fireball skill 
 - Add Golden cube to chase 
 - Add Character upgrades for gold 
-- find better sounds 
+- Find better sounds 
+- Add frost sphere skill 
+- Add laser Skill 
+- Add Magnet stat and skill 
+- Add credit card payments via shift (Using checkout)
 
 Done: 
 - Polish login screen

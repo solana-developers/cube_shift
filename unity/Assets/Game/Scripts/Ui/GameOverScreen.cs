@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Frictionless;
 using TMPro;
 using UnityEngine;
@@ -11,6 +8,7 @@ public class GameOverScreen : BaseScreen
 {
     public Button RestartButton;
     public TextMeshProUGUI WonText;
+    public GameObject WonRoot;
     
     private void Awake()
     {
@@ -25,9 +23,8 @@ public class GameOverScreen : BaseScreen
 
     public void Init(bool won)
     {
+        WonRoot.SetActive(won);
         WonText.text = won ? "You won!" : "You lost";
         Open();
     }
-    
-    
 }

@@ -4,13 +4,14 @@ using UnityEngine;
 public class CameraShake : MonoBehaviour
 {
     private Transform cameraTransform;
-    private Vector3 originalPosition;
     private float shakeDuration = 0f;
     private float shakeIntensity = 0.1f;
-
+    private Vector3 StartPosition;
+    public Vector3 PortraitCameraOffset;
+    
     void Awake()
     {
-        originalPosition = transform.localPosition;
+        StartPosition = transform.localPosition;
         ServiceFactory.RegisterSingleton(this);
         if (cameraTransform == null)
         {
@@ -20,15 +21,25 @@ public class CameraShake : MonoBehaviour
 
     void Update()
     {
+        Vector3 startPosition = Vector3.zero;
+        if (Screen.width < Screen.height)
+        {
+            startPosition = StartPosition + PortraitCameraOffset;
+        }
+        else
+        {
+            startPosition = StartPosition;
+        }
+        
         if (shakeDuration > 0)
         {
-            cameraTransform.localPosition = originalPosition + Random.insideUnitSphere * shakeIntensity;
+            cameraTransform.localPosition = startPosition + Random.insideUnitSphere * shakeIntensity;
             shakeDuration -= Time.deltaTime;
         }
         else
         {
             shakeDuration = 0f;
-            cameraTransform.localPosition = originalPosition;
+            cameraTransform.localPosition = startPosition;
         }
     }
 
