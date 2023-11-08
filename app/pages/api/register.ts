@@ -9,7 +9,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     return post(req, res);
   }
-console.log("req.method: " + req.method);
+  console.log("req.method: " + req.method);
   res.setHeader('Access-Control-Allow-Credentials', "true")
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
